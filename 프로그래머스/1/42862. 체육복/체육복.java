@@ -1,38 +1,36 @@
-import java.util.*;
-
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        // 여분 가져온 학생
-        Set<Integer> reserveSet = new HashSet<>();
+        int[] student = new int[n+2];
         
-        // 도난 당한 학생
-        Set<Integer> lostSet = new HashSet<>();
+        for(int i : lost) {
+            student[i]--;
+        }
         
-        // 여분 가져온 학생 Set에 추가
         for(int i : reserve){
-            reserveSet.add(i);
+            student[i]++;
         }
         
-        // 도난 당한 학생 Set 추가
-        // 만약 여분 있는 학생이 도난당한 경우 reserveSet에서 제거
-        for (int i : lost){
-            if(reserveSet.contains(i)){
-                reserveSet.remove(i);
-            } else {
-                lostSet.add(i);
+        for(int i = 1; i <= n; i++) {
+            if(student[i] == 1) {
+                if(student[i-1] == -1) {
+                    student[i-1]++;
+                    student[i]--;
+                } else if(student[i+1] == -1){
+                    student[i+1]++;
+                    student[i]--;
+                }
+            } 
+        }
+         
+        int count = n;
+        
+        for(int i = 1; i <= n; i++) {
+            if(student[i] < 0){
+                count--;
             }
         }
         
-        // 여분 있는 학생이 앞뒤 중 한 학생에게 빌려주고
-        // 빌린 학생은 lostSet에서 제거
-        for(int i : reserveSet) {
-            if (lostSet.contains(i-1)) {
-                lostSet.remove(i-1);
-            } else if (lostSet.contains(i+1)) {
-                lostSet.remove(i+1);
-            }
-        }
-        
-        return n - lostSet.size();
+        return count;
+            
     }
 }
