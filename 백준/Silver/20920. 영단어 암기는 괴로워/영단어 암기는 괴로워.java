@@ -38,12 +38,10 @@ class Main {
 			return entry1.getKey().compareTo(entry2.getKey());
 		});
 
-        int size = list.size();
-        for(int i = 0; i < size; i++) {
-            sb.append(list.get(i).getKey());
-            if(i < size - 1)
-                sb.append("\n");
-        }
+        for(Map.Entry<String, Integer> entry : list) {
+			sb.append(entry.getKey()).append("\n");
+		}
+
         
         System.out.print(sb);
 	}
