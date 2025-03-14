@@ -8,7 +8,8 @@ class Main{
 
 		int N = Integer.parseInt(st.nextToken());
 
-		Set<Double> set = new HashSet<>();
+		Set<Double> set1 = new HashSet<>();
+		Set<Double> set2 = new HashSet<>();
 
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -16,9 +17,13 @@ class Main{
 			int Y = Integer.parseInt(st.nextToken());
 
 			double lean = (double) Y/X;
-			set.add(lean);
+			if(Y >= 0) {
+				set1.add(lean);
+			} else {
+				set2.add(lean);
+			}
 		}
 
-		System.out.println(set.size());
+		System.out.println(set1.size() + set2.size());
 	}
 }
