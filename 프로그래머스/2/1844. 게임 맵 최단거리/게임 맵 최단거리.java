@@ -1,57 +1,44 @@
+/*
+BFS로 1씩 증가하다가 목적지 오면 값 리턴
+*/
+
 import java.util.*;
 
 class Solution {
-    // 상하좌우 좌표
-    int[] dx = {-1, 1, 0, 0};
-    int[] dy = {0, 0, -1, 1};
-        
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {1, -1, 0, 0};
+    static int answer;
+    static Queue<int[]> queue = new LinkedList<>();
+    static boolean[][] visit;
+    static int[][] count;
+    
     public int solution(int[][] maps) {
-        int answer = 0;
-    
-        int[][] visited = new int[maps.length][maps[0].length];
+        visit = new boolean[maps.length][maps[0].length];
+        count = new int[maps.length][maps[0].length];
         
-        int result = bfs(maps, visited, maps.length-1, maps[0].length-1);
-        return (result == 0) ? -1 : result;
+        queue.add(new int[]{0, 0});
         
-        // answer = visited[maps.length-1][maps[0].length-1];
+        for (int i = 0; i < count.length; i++) {
+            Arrays.fill(count[i], -1);
+        }
         
-        // if(answer == 0)
-            // answer = -1;
+        count[0][0] = 1;
         
-        // return answer;
-    }
-    
-    public int bfs(int[][] maps, int[][] visited, int row, int col) {
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {0, 0}); // 큐에 시작점 (0, 0) 추가
-        visited[0][0] = 1; // 시작점 방문 거리 1
-        
-        while(!queue.isEmpty()){ // 큐가 빌 때까지 반복
-            int[] current = queue.poll(); // 현재 위치 꺼내기
+        while(!queue.isEmpty()) {
+            int[] current = queue.poll();
             
-            // 현재 좌표
-            int cX = current[0];
-            int cY = current[1];
-            
-            for(int i = 0; i < 4; i++) { // 상하좌우 이동
-                // 다음 좌표
-                int nX = cX + dx[i];
-                int nY = cY + dy[i];
+            for(int i = 0; i < 4; i++) {
+                int[] next = new int[]{current[0] + dx[i], current[1] + dy[i]};
                 
-                // 범위를 벗어나면 건너뛰기
-                if(nX < 0 || nX > row || nY < 0 || nY > col) {
-                    continue;
-                }
-                
-                // 방문하지 않았고, 갈 수 있는 길(1)인지 확인
-                if(visited[nX][nY] == 0 && maps[nX][nY] == 1) {
-                    visited[nX][nY] = visited[cX][cY] + 1; // 거리 업데이트
-                    queue.add(new int[] {nX, nY}); // 큐에 추가해서 다음 탐색
+                if(next[0] >= 0 && next[0] < maps.length && next[1] >= 0 && next[1] < maps[0].length) {
+                    if(maps[next[0]][next[1]] == 1 && !visit[next[0]][next[1]]) {
+                        queue.add(new int[]{next[0], next[1]});
+                        visit[next[0]][next[1]] = true;
+                        count[next[0]][next[1]] = count[current[0]][current[1]] + 1;
+                    }
                 }
             }
         }
-        
-        return visited[row][col];
-        
+        return count[maps.length-1][maps[0].length-1];
     }
 }
