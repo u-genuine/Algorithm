@@ -1,54 +1,55 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-	static int n;
-	static int k;
-	static int[] time;
-	static boolean[] visit;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		n = Integer.parseInt(st.nextToken());
-		k = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
 
-		time = new int[100001];
-		visit = new boolean[100001];
-
-		Queue<int[]> q = new LinkedList<>();
-		q.add(new int[] {n, 0});
-		visit[n] = true;
-
-		while(!q.isEmpty()) {
-			int[] current = q.poll();
-
-			if(current[0] == k) {
-				System.out.println(current[1]);
-				return;
-			}
-			for(int i = 0; i < 3; i++) {
-				int next;
-				int time;
-				if(i == 0){
-					next = current[0] * 2;
-					time = current[1];
-				} else if(i == 1){
-					next = current[0] - 1;
-					time = current[1] + 1;
-				} else {
-					next = current[0] + 1;
-					time = current[1] + 1;
-				}
-
-				if(next >= 0 && next <= 100000 && !visit[next]) {
-					q.add(new int[] {next, time});
-					visit[next] = true;
-				}
-			}
+		if(K <= N) {
+			System.out.println(N-K);
+			return;
 		}
 
+		int[] arr = new int[100001];
+		boolean[] visited = new boolean[100001];
+
+		arr[N] = 0;
+		Deque<Node> queue = new ArrayDeque<>();
+		queue.addFirst(new Node(N, 0));
+
+		while(!queue.isEmpty()) {
+			Node cur = queue.poll();
+			visited[cur.index] = true;
+			if(cur.index == K) {
+				System.out.println(cur.time);
+				break;
+			}
+
+			if(cur.index * 2 <= 100000 && !visited[cur.index * 2]) {
+				queue.addFirst(new Node(cur.index * 2, cur.time));
+			}
+
+			if(cur.index + 1 <= 100000 && !visited[cur.index + 1]) {
+				queue.add(new Node(cur.index + 1, cur.time + 1));
+			}
+
+			if(cur.index - 1 >= 0 && !visited[cur.index - 1]) {
+				queue.add(new Node(cur.index - 1, cur.time + 1));
+			}
+		}
+ 	}
+}
+
+class Node {
+	int index;
+	int time;
+
+	Node(int index, int time) {
+		this.index = index;
+		this.time = time;
 	}
 }
