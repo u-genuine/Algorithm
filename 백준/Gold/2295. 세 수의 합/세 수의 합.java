@@ -14,36 +14,19 @@ class Main {
 
         Arrays.sort(arr);
 
-        boolean find = false;
+        // 두 수의 합을 미리 저장
+        Set<Integer> twoSum = new HashSet<>();
+        for(int i = 0; i < N; i++) {
+            for(int j = i; j < N; j++) {
+                twoSum.add(arr[i] + arr[j]);
+            }
+        }
         
         for(int i = N-1; i >= 0; i--) {
-            if(find) {
-                break;
-            }
-            
-            int target = arr[i];
-
             for(int j = i - 1; j >= 0; j--) {
-                if(find) break;    
-                
-                int idx1 = 0;
-                int idx2 = j;
-                int num3 = arr[j];
-
-                int targetSum = target - num3;
-                while(idx1 <= idx2) {
-                    int num1 = arr[idx1];
-                    int num2 = arr[idx2];
-
-                    if(num1 + num2 == targetSum) {
-                        find = true;
-                        System.out.println(target);
-                        break;
-                    } else if (num1 + num2 > targetSum) {
-                        idx2--;
-                    } else {
-                        idx1++;
-                    }
+                if(twoSum.contains(arr[i] - arr[j])) {
+                    System.out.println(arr[i]);
+                    return;
                 }
             }
         }
