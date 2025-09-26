@@ -1,0 +1,8 @@
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_INS
+WHERE ANIMAL_ID IN (SELECT i.ANIMAL_ID
+                    FROM ANIMAL_INS i
+                    JOIN ANIMAL_OUTS o
+                    ON i.ANIMAL_ID = o.ANIMAL_ID
+                    WHERE i.DATETIME > o.DATETIME)
+ORDER BY DATETIME ASC;
