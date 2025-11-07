@@ -6,7 +6,7 @@ class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        PriorityQueue<Request> requestPQ = new PriorityQueue<>();
+        PriorityQueue<Request> requestPQ = new PriorityQueue<>((r1, r2) -> r1.d - r2.d);
         for(int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int p = Integer.parseInt(st.nextToken());
@@ -22,7 +22,7 @@ class Main {
             Request r = requestPQ.poll();
             payPQ.add(r.p);
 
-            while(payPQ.size() > r.d) {
+            if(payPQ.size() > r.d) {
                 payPQ.poll();
             }
         }
@@ -36,23 +36,12 @@ class Main {
     }
 }
 
-class Request implements Comparable<Request> {
+class Request{
     int d;
     int p;
 
     Request(int d, int p) {
         this.d = d;
         this.p = p;
-    }
-
-    @Override
-    public int compareTo(Request request) {
-        if (this.d > request.d) {
-            return 1;
-        } else if (this.d < request.d) {
-            return -1;
-        } else {
-            return 0;
-        }
     }
 }
