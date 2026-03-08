@@ -21,17 +21,8 @@ class Main {
             }
         }
 
-        int answer = Integer.MAX_VALUE;
-        int temp = BFS(map);
-        if(temp != -1) {
-            answer = Math.min(temp, answer);
-        }
-
-        if(answer == Integer.MAX_VALUE) {
-            System.out.println(-1);    
-        } else {
-            System.out.println(answer);
-        }
+        int answer = BFS(map);
+        System.out.println(answer);
         
     }
 
